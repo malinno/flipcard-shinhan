@@ -8,7 +8,7 @@ export default function intron() {
     height: "100vh",
   };
   const handleButtonClick = () => {
-    window.location.href = "/game";
+    window.location.href = "/flipcard";
   };
   return (
     <div

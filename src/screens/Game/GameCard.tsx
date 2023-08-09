@@ -6,9 +6,8 @@ import {
   createGameLoop,
   createStage,
   createViewport,
-  TextureRegion,
 } from "gdxts";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 
 const WORLD_WIDTH = 640;
 const WORLD_HEIGHT = 1385;
@@ -27,8 +26,6 @@ interface Transition {
 }
 
 const PlayGame: React.FC = () => {
-  const [buttonRegion, setButtonRegion] = useState<TextureRegion | null>(null);
-
   useEffect(() => {
     const init = async () => {
       const stage = createStage();
@@ -37,7 +34,7 @@ const PlayGame: React.FC = () => {
       const gl = viewport.getContext();
 
       const assetManager = new AssetManager(gl);
-      assetManager.loadTexture("./assets/bg.png", "bg");
+      // assetManager.loadTexture("./assets/bg.png", "bg");
       assetManager.loadAtlas("./assets/atlas/flipcard.atlas", "flipcard");
       assetManager.loadAtlas("./assets/atlas/button.atlas", "button");
       assetManager.loadTexture("./assets/atlas/button.png", "buttonBg");
@@ -50,7 +47,7 @@ const PlayGame: React.FC = () => {
       const batch = new PolygonBatch(gl);
       batch.setYDown(true);
 
-      const bg = assetManager.getTexture("bg")!;
+      // const bg = assetManager.getTexture("bg")!;
       const altas = assetManager.getAtlas("flipcard")!;
       const backRegion = altas.findRegion("back", -1)!;
       const cardRegions = altas.findRegions("card");
@@ -110,29 +107,7 @@ const PlayGame: React.FC = () => {
         }
         const { x, y } = inputHandler.getTouchedWorldCoord();
         // Check if the button is clicked
-        if (buttonRegion) {
-          const buttonWidth = 500;
 
-          const buttonHeight = 500;
-          const buttonX = WORLD_WIDTH - buttonWidth - 20;
-
-          const buttonY = WORLD_HEIGHT - buttonHeight - 20;
-          console.log("Button X:", buttonX);
-          console.log("Button Y:", buttonY);
-          console.log("Button Width:", buttonWidth);
-          console.log("Button Height:", buttonHeight);
-
-          if (
-            x >= buttonX &&
-            x <= buttonX + buttonWidth &&
-            y >= buttonY &&
-            y <= buttonY + buttonHeight
-          ) {
-            // Button is clicked
-            alert("Button Clicked!");
-            return;
-          }
-        }
         const cellX = Math.floor((x - START_X) / (CELL_WIDTH + GAP));
         const cellY = Math.floor((y - START_Y) / (CELL_HEIGHT + GAP));
         const cellPos = cellY * COLS + cellX;
@@ -199,15 +174,6 @@ const PlayGame: React.FC = () => {
 
       gl.clearColor(0, 0, 0, 0);
       createGameLoop((delta: number) => {
-        // Draw the button
-        if (buttonRegion) {
-          const buttonWidth = 100;
-          const buttonHeight = 40;
-          const buttonX = WORLD_WIDTH - buttonWidth - 20;
-          const buttonY = WORLD_HEIGHT - buttonHeight - 20;
-
-          buttonRegion.draw(batch, buttonX, buttonY, buttonWidth, buttonHeight);
-        }
         for (let cell of cells) {
           if (!cell.transition) {
             continue;
@@ -221,7 +187,7 @@ const PlayGame: React.FC = () => {
         gl.clear(gl.COLOR_BUFFER_BIT);
         batch.setProjection(camera.combined);
         batch.begin();
-        batch.draw(bg, 0, 0, WORLD_WIDTH, WORLD_HEIGHT);
+        // batch.draw(bg, 0, 0, WORLD_WIDTH, WORLD_HEIGHT);
         for (let i = 0; i < cells.length; i++) {
           const x = i % COLS;
           const y = Math.floor(i / COLS);
