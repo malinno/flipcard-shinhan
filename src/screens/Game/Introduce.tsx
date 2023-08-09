@@ -1,12 +1,30 @@
 export default function intron() {
   const containerStyle = {
-    backgroundImage: "url('../src/assets/intron.png')",
+    backgroundImage: "url('../src/assets/play.png')",
     backgroundSize: "cover",
     backgroundPosition: "center",
     backgroundAttachment: "fixed",
     width: "100vw",
     height: "100vh",
+    position: "relative",
   };
+  const overlayStyle = {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+    backgroundColor: "rgba(0, 0, 0, 0.7)",
+    zIndex: 1,
+  };
+  const imageStyle = {
+    width: "18rem",
+    position: "absolute",
+    bottom: "94px",
+    left: "50%",
+    transform: "translateX(-50%)",
+  };
+
   const handleButtonClick = () => {
     window.location.href = "/flipcard";
   };
@@ -15,66 +33,38 @@ export default function intron() {
       style={containerStyle}
       className="flex flex-col items-center justify-center"
     >
-      <div style={{ position: "fixed", top: "287px" }}>
-        <div>
-          <h1
-            style={{
-              color: "#FFF",
-              position: "fixed",
-              top: "307px",
-              marginLeft: "9px",
-              fontSize: "14px",
-            }}
-          >
-            Tổng số bước: 30
-          </h1>
-
-          <img
-            src="../src/assets/oclok.png"
-            alt="oclok"
-            className="w-[15em]"
-            style={{ position: "fixed", top: "312px", marginLeft: "-117px" }}
-          />
-        </div>
-      </div>
+      <div style={overlayStyle}></div>
+      <img src="../src/assets/backgroupin.png" style={imageStyle} />
       <h1
-        style={{
-          color: "#fff",
-          fontSize: "15px",
-          textAlign: "center",
-          position: "fixed",
-          top: "360px",
-        }}
+        className="ml-[10px]  z-10 absolute top-[308px] ml-[119px]"
+        style={{ color: "#fff" }}
+      >
+        Tổng số bước: 30
+      </h1>
+      <img
+        src="../src/assets/oclockgame.png"
+        className="w-[250px] z-10 absolute top-[315px]"
+      />
+      <h1
+        className="z-10 absolute top-[370px] text-center"
+        style={{ color: "#fff" }}
       >
         Nhận số điểm cao nhất khi sử dụng ít <br /> bước lật và thời gian nhất.
       </h1>
       <img
         src="../src/assets/backgroupintron.png"
-        alt="backgroupintron"
-        className="w-[15em]"
-        style={{
-          position: "fixed",
-          top: "453px",
-          width: "47%",
-          marginLeft: "-98px",
-        }}
+        className="z-10 w-[183px] absolute top-[472px] mr-[101px]"
       />
       <h1
-        style={{
-          color: "#fff",
-          fontSize: "15px",
-          textAlign: "center",
-          position: "fixed",
-          top: "644px",
-        }}
+        className="z-10 absolute top-[660px] text-center"
+        style={{ color: "#fff" }}
       >
-        Ghép các thẻ giống nhau để nhận <br /> điểm thưởng nhé!
+        Ghép các thẻ giống nhau để nhận <br />
+        điểm thưởng nhé!
       </h1>
       <img
         src="../src/assets/buttonunderstood.png"
-        alt="buttonunderstood"
-        className=" w-[10em]"
-        style={{ position: "fixed", top: "715px" }}
+        className=" w-[10em] z-10 absolute top-[712px] "
         onClick={handleButtonClick}
       />
     </div>
