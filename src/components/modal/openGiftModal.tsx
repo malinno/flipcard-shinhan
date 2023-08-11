@@ -22,6 +22,17 @@ function OpenGiftModal() {
   return (
     <div>
       <div style={containerStyle} className="flex items-center justify-center">
+        <div
+          style={{
+            position: "fixed",
+            top: "107px",
+            right: "0",
+            marginRight: "10px",
+          }}
+        >
+          <img src="../src/assets/close.png" alt="" className="w-full " />
+        </div>
+
         <div style={{ position: "fixed", top: "287px" }}>
           <img
             style={imageStyle}
