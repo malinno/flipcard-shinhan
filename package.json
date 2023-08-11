@@ -12,18 +12,25 @@
     "dependencies": {
         "@ant-design/icons": "^5.2.5",
         "antd": "^5.8.2",
+        "axios": "^1.4.0",
+        "easy-peasy": "^6.0.2",
+        "EventEmitter": "^1.0.0",
         "gdxts": "^0.1.38",
+        "lodash.debounce": "^4.0.8",
         "react": "^18.2.0",
         "react-circular-progressbar": "^2.1.0",
         "react-dom": "^18.2.0",
         "react-router": "^6.14.2",
         "react-router-dom": "^6.14.2",
-        "react-spinners": "^0.13.8"
+        "react-spinners": "^0.13.8",
+        "uuid": "^9.0.0"
     },
     "devDependencies": {
+        "@types/lodash.debounce": "^4.0.7",
         "@types/node": "^20.4.9",
         "@types/react": "^18.2.15",
         "@types/react-dom": "^18.2.7",
+        "@types/uuid": "^9.0.2",
         "@typescript-eslint/eslint-plugin": "^6.0.0",
         "@typescript-eslint/parser": "^6.0.0",
         "@vitejs/plugin-react": "^4.0.3",

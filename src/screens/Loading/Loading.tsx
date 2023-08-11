@@ -1,53 +1,97 @@
-import { BarLoader } from "react-spinners";
-import { useState, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import appConfig from "../../config";
+import gamefoxSDK from "../../gamefoxSDK";
+import {
+  useConfig,
+  useInventory,
+  useQuest,
+  useUser,
+  useItems,
+  useSystemInfo,
+  usePool,
+} from "../../hooks";
+// import { ASSETS } from '../../utils/assetUtils';
+import classes from "./loading.module.css";
 
-export default function Loading() {
-  const [isLoading, setIsLoading] = useState(true);
-  const containerStyle = {
-    backgroundImage: "url('../src/assets/backgroup.png')",
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-    width: "100vw",
-    height: "101vh",
-  };
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-      window.location.href = "/play";
-    }, 5000);
-    return () => clearTimeout(timer);
+type Props = {
+  //
+};
+
+export const LoadingScreen: React.FC<Props> = () => {
+  const navigate = useNavigate();
+  const [inited, setInited] = useState(false);
+  const [loadedAssets, setLoadedAssets] = useState(false);
+
+  const [, setUser] = useUser();
+  const [, getConfig] = useConfig();
+  const [, getInventory] = useInventory();
+  const [, getItems] = useItems();
+  const [, getQuests] = useQuest();
+  const [, getSystemInfo] = useSystemInfo();
+  const [, getPool] = usePool();
+
+  const init = useCallback(async () => {
+    // TODO: use configuration set from sdk
+    try {
+      if (appConfig.online) {
+        await gamefoxSDK.init(appConfig.apiUrl);
+
+        getConfig();
+        const user = await gamefoxSDK.auth();
+        setUser(user);
+        await getInventory();
+        await getItems();
+        await getQuests();
+        await getSystemInfo();
+        await getPool();
+      } else {
+        // Offline usecase
+        setUser({
+          _id: "userId",
+          data: {
+            username: "Nguyen Van Dat",
+          },
+        });
+        getConfig();
+        await getInventory();
+        await getItems();
+        await getQuests();
+        await getSystemInfo();
+        await getPool();
+      }
+      setInited(true);
+    } catch (error: any) {
+      if (error?.message) {
+      }
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  if (isLoading) {
-    return (
-      <div
-        style={containerStyle}
-        className="flex flex-col items-center justify-center"
-      >
-        <img
-          src="../src/assets/shinhan.png"
-          alt="shinhan"
-          className="w-[10rem]"
-        />
-        <img
-          src="../src/assets/logobackgroup.png"
-          alt="logobackgroup"
-          className="text-center mt-[50px] w-[24em]"
-        />
-        <div className="w-[60vw] mt-[50px]">
-          <h1 className="text-center text-2xs" style={{ color: "#fff" }}>
-            Chờ chút nhé!
-          </h1>
-          <BarLoader
-            color="#f9d800"
-            className="mt-1 ml-5"
-            width={200}
-            height={10}
-            cssOverride={{ borderRadius: 20, backgroundColor: "white" }}
-          />
-        </div>
+
+  useEffect(() => {
+    if (!inited) {
+      init();
+    }
+  }, [init, inited]);
+
+  useEffect(() => {
+    if (inited && loadedAssets) {
+      console.log("navigate");
+      navigate("/game", {
+        replace: true,
+      });
+    }
+  }, [navigate, inited, loadedAssets]);
+
+  return (
+    <div className={classes.container}>
+      {/* <img src={ASSETS.LOADING_BG} alt="" className={classes['background']} /> */}
+      {/* <img src={ASSETS.SOL_LOGO} alt="" className={classes['logo']} /> */}
+      <div className={classes["loadingWrapper"]}>
+        <span className="pro-regular">Chờ chút nhé!</span>
+        <div className={classes["loadingBar"]}></div>
       </div>
-    );
-  } else {
-    return null;
-  }
-}
+    </div>
+  );
+};
