@@ -1,40 +1,41 @@
 export default function intron() {
-  const containerStyle = {
-    backgroundImage: "url('../src/assets/play.png')",
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-    backgroundAttachment: "fixed",
-    width: "100vw",
-    height: "100vh",
-    position: "relative",
-  };
-  const overlayStyle = {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    width: "100%",
-    height: "100%",
-    backgroundColor: "rgba(0, 0, 0, 0.7)",
-    zIndex: 1,
-  };
-  const imageStyle = {
-    width: "18rem",
-    position: "absolute",
-    bottom: "94px",
-    left: "50%",
-    transform: "translateX(-50%)",
-  };
-
   const handleButtonClick = () => {
     window.location.href = "/flipcard";
   };
   return (
     <div
-      style={containerStyle}
+      style={{
+        backgroundImage: "url('../src/assets/play.png')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundAttachment: "fixed",
+        width: "100vw",
+        height: "100vh",
+        position: "relative",
+      }}
       className="flex flex-col items-center justify-center"
     >
-      <div style={overlayStyle}></div>
-      <img src="../src/assets/backgroupin.png" style={imageStyle} />
+      <div
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          backgroundColor: "rgba(0, 0, 0, 0.7)",
+          zIndex: 1,
+        }}
+      ></div>
+      <img
+        src="../src/assets/backgroupin.png"
+        style={{
+          width: "18rem",
+          position: "absolute",
+          bottom: "94px",
+          left: "50%",
+          transform: "translateX(-50%)",
+        }}
+      />
       <h1
         className="ml-[10px]  z-10 absolute top-[308px] ml-[119px]"
         style={{ color: "#fff" }}

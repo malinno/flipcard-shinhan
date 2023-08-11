@@ -1,7 +1,6 @@
 import {
   Align,
   AssetManager,
-  Color2Attribute,
   InputEvent,
   PolygonBatch,
   ViewportInputHandler,
@@ -75,9 +74,12 @@ export const init = async () => {
   let gameTime = 0;
   // thời gian kết thúc 3 s mới bắt đầu đếm 30s
   let startGame = false;
+  let gameStarted = false;
+  let countdownStarted = false;
 
   const reset = () => {
     startGame = false;
+    countdownStarted = false;
     gameTime = 0;
     initialized = false;
     cells.length = 0;
@@ -120,7 +122,7 @@ export const init = async () => {
   let flipped = 0;
 
   inputHandler.addEventListener(InputEvent.TouchStart, () => {
-    if (!initialized) {
+    if (!initialized || gameStarted) {
       return;
     }
     if (flipped >= 2) {
@@ -189,9 +191,12 @@ export const init = async () => {
         }, 500);
       }
     }
-    if (!startGame) {
+    if (!countdownStarted) {
       // Khi đếm ngược 3 giây kết thúc, bắt đầu đếm thời gian 30 giây
-      startGame = true;
+      countdownStarted = true;
+      setTimeout(() => {
+        startGame = true;
+      }, 3000); // Đợi 3 giây trước khi bắt đầu đếm 30 giây
     }
     checkTimeLimit();
   });
@@ -205,14 +210,19 @@ export const init = async () => {
   };
   gl.clearColor(0, 0, 0, 0);
   const loop = createGameLoop((delta: number) => {
-    if (startGame) {
-      // Nếu đã bắt đầu đếm thời gian, thì mới cập nhật thời gian
-      gameTime += delta;
-    }
     // cập nhật thời gian đếm ngược
     const remainingTime = Math.max(0, SHOW_ALL_TIMER - Math.floor(gameTime));
     timeDisplay.textContent = `Time: ${remainingTime}s`;
     gameTime += delta;
+
+    if (countdownStarted && !startGame) {
+      // Đếm ngược 3 giây
+      showAllCountdown -= delta;
+
+      if (showAllCountdown <= 0) {
+        startGame = true;
+      }
+    }
     for (let cell of cells) {
       if (!cell.transition) {
         continue;
