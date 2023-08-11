@@ -1,62 +1,69 @@
 
 flipcard.png
-size: 1024, 256
+size: 2048, 256
 format: RGBA8888
 filter: Nearest, Nearest
 repeat: none
 back
   rotate: false
-  xy: 380, 48
+  xy: 534, 48
   size: 124, 129
   orig: 124, 129
   offset: 0, 0
   index: -1
 below
   rotate: false
-  xy: 2, 133
+  xy: 156, 133
   size: 219, 44
   orig: 219, 44
   offset: 0, 0
   index: -1
 card
   rotate: false
-  xy: 2, 2
+  xy: 156, 2
   size: 124, 129
   orig: 124, 129
   offset: 0, 0
   index: 4
 card
   rotate: false
-  xy: 128, 2
+  xy: 282, 2
   size: 124, 129
   orig: 124, 129
   offset: 0, 0
   index: 1
 card
   rotate: false
-  xy: 254, 48
+  xy: 408, 48
   size: 124, 129
   orig: 124, 129
   offset: 0, 0
   index: 6
 card
   rotate: false
-  xy: 506, 48
+  xy: 660, 48
   size: 124, 129
   orig: 124, 129
   offset: 0, 0
   index: 3
 card
   rotate: false
-  xy: 632, 48
+  xy: 786, 48
   size: 124, 129
   orig: 124, 129
   offset: 0, 0
   index: 5
 card
   rotate: false
-  xy: 758, 48
+  xy: 912, 48
   size: 124, 129
   orig: 124, 129
   offset: 0, 0
   index: 2
+icon
+  rotate: false
+  xy: 2, 25
+  size: 152, 152
+  orig: 152, 152
+  offset: 0, 0
+  index: -1

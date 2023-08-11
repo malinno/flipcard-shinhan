@@ -1,6 +1,7 @@
 import {
   Align,
   AssetManager,
+  Color2Attribute,
   InputEvent,
   PolygonBatch,
   ViewportInputHandler,
@@ -18,6 +19,16 @@ const FADE_DURATION = 0.2;
 const FADE_DELAY = 0.2;
 
 const SHOW_ALL_DURATION = 4;
+const SHOW_ALL_TIMER = 30;
+const timeDisplay = document.createElement("div");
+timeDisplay.style.position = "absolute";
+timeDisplay.style.top = "320px";
+timeDisplay.style.left = "60px";
+timeDisplay.style.color = "red";
+timeDisplay.style.zIndex = "999";
+timeDisplay.style.fontSize = "20px";
+timeDisplay.style.fontWeight = "500";
+document.body.appendChild(timeDisplay);
 
 interface Transition {
   type: "flip-up" | "flip-down" | "fade";
@@ -49,6 +60,7 @@ export const init = async () => {
   // const shadowRegion = altas.findRegion("shadow", -1)!;
   const cardRegions = altas.findRegions("card");
   const belowRegion = altas.findRegions("below")[0]!;
+  // const iconRegion = altas.findRegion("icon");
   let initialized = false;
 
   const cells: {
@@ -59,8 +71,14 @@ export const init = async () => {
   }[] = [];
 
   let showAllCountdown = 0;
+  //thời gian đếm trò chơi
+  let gameTime = 0;
+  // thời gian kết thúc 3 s mới bắt đầu đếm 30s
+  let startGame = false;
 
   const reset = () => {
+    startGame = false;
+    gameTime = 0;
     initialized = false;
     cells.length = 0;
     for (let i = 0; i < 12; i++) {
@@ -171,12 +189,30 @@ export const init = async () => {
         }, 500);
       }
     }
+    if (!startGame) {
+      // Khi đếm ngược 3 giây kết thúc, bắt đầu đếm thời gian 30 giây
+      startGame = true;
+    }
+    checkTimeLimit();
   });
 
   const font = assetManager.getFont("inter")!;
-
+  const checkTimeLimit = () => {
+    if (gameTime >= SHOW_ALL_TIMER) {
+      alert("Hết thời gian!");
+      reset();
+    }
+  };
   gl.clearColor(0, 0, 0, 0);
   const loop = createGameLoop((delta: number) => {
+    if (startGame) {
+      // Nếu đã bắt đầu đếm thời gian, thì mới cập nhật thời gian
+      gameTime += delta;
+    }
+    // cập nhật thời gian đếm ngược
+    const remainingTime = Math.max(0, SHOW_ALL_TIMER - Math.floor(gameTime));
+    timeDisplay.textContent = `Time: ${remainingTime}s`;
+    gameTime += delta;
     for (let cell of cells) {
       if (!cell.transition) {
         continue;
@@ -235,6 +271,16 @@ export const init = async () => {
         scaleX = 1 - transition.elapse / transition.duration;
         scaleY = scaleX;
       }
+      // iconRegion?.draw(
+      //   batch,
+
+      //   WORLD_WIDTH / 2 - 93,
+      //   WORLD_HEIGHT * 0.3,
+      //   210,
+      //   (322 * 60) / 90
+
+      //   // Align.center * 100
+      // );
       belowRegion.draw(
         batch,
         WORLD_WIDTH / 2 - 182,
@@ -243,39 +289,25 @@ export const init = async () => {
         (310 * 64) / 256
       );
 
-      font.data.setXYScale(0.6);
+      font.data.setXYScale(0.35);
       font.draw(
         batch,
-        "Điểm",
-        WORLD_WIDTH / 2 - 170,
-        WORLD_HEIGHT * 0.9,
-        WORLD_WIDTH / 10,
-        Align.center,
-        true
+        "Điểm : 0",
+        WORLD_WIDTH * 0.31,
+        WORLD_HEIGHT * 0.92,
+
+        Align.center * 200
       );
+
       font.draw(
         batch,
-        "level",
-        WORLD_WIDTH / 2 - 182,
-        WORLD_HEIGHT * 0.9,
-        WORLD_WIDTH / 10,
-        Align.center,
-        true
+        "Level 1",
+        WORLD_WIDTH * 0.55,
+        WORLD_HEIGHT * 0.922,
+        Align.center * 200
       );
       font.data.setXYScale(1);
 
-      // shadowRegion.draw(
-      //   batch,
-      //   START_X + x * (CELL_WIDTH + GAP),
-      //   START_Y + y * (CELL_HEIGHT + GAP) + SHADOW_OFFSET,
-      //   CELL_WIDTH,
-      //   CELL_HEIGHT,
-      //   CELL_WIDTH / 2,
-      //   CELL_HEIGHT / 2,
-      //   0,
-      //   scaleX,
-      //   scaleY
-      // );
       region.draw(
         batch,
         START_X + x * (CELL_WIDTH + GAP),
@@ -291,6 +323,7 @@ export const init = async () => {
     }
 
     showAllCountdown -= delta;
+
     if (showAllCountdown > 0) {
       if (showAllCountdown <= 1) {
         font.data.setXYScale(0.6);
@@ -299,14 +332,16 @@ export const init = async () => {
         batch,
         showAllCountdown > 1 ? Math.floor(showAllCountdown).toString() : "GO!",
         0,
-        520,
+        490,
+        // WORLD_HEIGHT / 2,
         WORLD_WIDTH,
         Align.center,
+
         true
       );
       font.data.setXYScale(1);
     }
-
+    checkTimeLimit();
     batch.end();
   });
 
