@@ -5,7 +5,10 @@ import PlayGame from "./screens/Game/PlayGame";
 import Intron from "./screens/Game/Introduce";
 import GameCard from "./screens/Game/GameCard";
 import Point from "./screens/Game/Point";
+import RewardedModal from "./components/modal/rewardedModal";
+import OpenGiftModal from "./components/modal/openGiftModal";
 import Flipcard from "./screens/Game/Flipcard";
+import GiftList from "./components/modal/giftList";
 
 function App() {
   return (
@@ -16,6 +19,9 @@ function App() {
         <Route path="/intron" element={<Intron />} />
         <Route path="/game" element={<GameCard />} />
         <Route path="/point" element={<Point />} />
+        <Route path="/rewardedModal" element={<RewardedModal />} />
+        <Route path="/openGiftModal" element={<OpenGiftModal />} />
+        <Route path="/gift" element={<GiftList />} />
         <Route path="/flipcard" element={<Flipcard />} />
       </Routes>
     </BrowserRouter>
