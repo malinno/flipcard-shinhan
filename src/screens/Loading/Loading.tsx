@@ -12,7 +12,7 @@ import {
   usePool,
 } from "../../hooks";
 // import { ASSETS } from '../../utils/assetUtils';
-import classes from "./loading.module.css";
+import showNotice from "../../utils/showNotice";
 
 type Props = {
   //
@@ -36,7 +36,6 @@ export const LoadingScreen: React.FC<Props> = () => {
     try {
       if (appConfig.online) {
         await gamefoxSDK.init(appConfig.apiUrl);
-
         getConfig();
         const user = await gamefoxSDK.auth();
         setUser(user);
@@ -63,6 +62,9 @@ export const LoadingScreen: React.FC<Props> = () => {
       setInited(true);
     } catch (error: any) {
       if (error?.message) {
+        showNotice(error.message as string, {
+          closeable: false,
+        });
       }
     }
 

@@ -1,0 +1,26 @@
+.pushable {
+  border-radius: calc(var(--game-width) * 0.05);
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.pushable-front {
+  display: flex;
+  border-radius: calc(var(--game-width) * 0.05);
+  color: white;
+  transform: translate(
+    calc(var(--game-width) * 0.001),
+    calc(var(--game-width) * 0.001 * -2)
+  );
+  transition: all 0ms cubic-bezier(0.55, 0.055, 0.675, 0.19);
+  /* box-shadow: 0px 6px 4px 0px rgba(31, 17, 48, 0.5); */
+}
+
+.pushable:active .pushable-front {
+  transform: translateY(0);
+}
+
+.pushable.disabled {
+  filter: grayscale(70%);
+}
